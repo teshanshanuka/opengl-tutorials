@@ -58,7 +58,7 @@ static uint compileShader(uint type, const string& src) {
     return id;
 }
 
-static int CreateShader(const string& vertexShader, const string& fragmentShader) {
+static int createShader(const string& vertexShader, const string& fragmentShader) {
     uint prog = glCreateProgram();
     uint vs = compileShader(GL_VERTEX_SHADER, vertexShader);
     uint fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -110,8 +110,9 @@ int main(void) {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
+
     ShaderProgSource srcs = parseShader("/home/teshan/code/opengl-play/4-shaders-from-files/res/shaders/basic.shader");
-    uint shader = CreateShader(srcs.vertex_src, srcs.fragment_src);
+    uint shader = createShader(srcs.vertex_src, srcs.fragment_src);
     glUseProgram(shader);
 
     /* Loop until the user closes the window */

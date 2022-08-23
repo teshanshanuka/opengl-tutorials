@@ -28,7 +28,7 @@ static uint compileShader(uint type, const string& src) {
     return id;
 }
 
-static int CreateShader(const string& vertexShader, const string& fragmentShader) {
+static int createShader(const string& vertexShader, const string& fragmentShader) {
     uint prog = glCreateProgram();
     uint vs = compileShader(GL_VERTEX_SHADER, vertexShader);
     uint fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -98,7 +98,7 @@ int main(void) {
         "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}";
 
-    uint shader = CreateShader(vertexShader, fragmentShader);
+    uint shader = createShader(vertexShader, fragmentShader);
     glUseProgram(shader);
 
     /* Loop until the user closes the window */
