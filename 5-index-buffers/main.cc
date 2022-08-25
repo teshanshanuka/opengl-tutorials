@@ -86,33 +86,43 @@ void status() {
 }
 
 int main(void) {
+    /* ************** INIT ************** */
     GLFWwindow* window;
-
-    /* Initialize the library */
     if (!glfwInit()) return -1;
-
-    /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window) {
         glfwTerminate();
         return -1;
     }
-
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
     status();
 
-    float positions[6] = {
-        -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f,
+    /* ************** STUFF ************** */
+    float positions[] = {
+        -0.5f, -0.5f, 
+        0.5f, -0.5f, 
+        0.5f, 0.5f,
+        -0.5f, 0.5f,
     };
-    unsigned int buffer;
+    // I want the to make two triangle out of these
+    uint indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    uint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), positions, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+    uint ibo;  // Index buffer obj
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(uint), indices, GL_STATIC_DRAW);
 
     ShaderProgSource srcs = parseShader(utils::getFilePath(__FILE__) + "/res/shaders/basic.shader");
     uint shader = createShader(srcs.vertex_src, srcs.fragment_src);
@@ -123,7 +133,7 @@ int main(void) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
